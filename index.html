@@ -1763,7 +1763,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
                         <label class="block text-zinc-400 mb-1">Прозвища</label>
                         <input type="text" id="char-form-nicknames" class="w-full bg-black/60 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-accent focus:outline-none">
@@ -1771,6 +1771,10 @@
                     <div>
                         <label class="block text-zinc-400 mb-1">Национальность</label>
                         <input type="text" id="char-form-nationality" class="w-full bg-black/60 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-accent focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-zinc-400 mb-1">Род деятельности</label>
+                        <input type="text" id="char-form-occupation" class="w-full bg-black/60 border border-white/10 rounded-lg px-3 py-2 text-white focus:border-accent focus:outline-none">
                     </div>
                 </div>
 
@@ -3826,18 +3830,18 @@
 
             if (!day || !month || month < 1 || month > 12 || day < 1 || day > 31) return '';
 
-            if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return '♈ Овен';
-            if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return '♉ Телец';
-            if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return '♊ Близнецы';
-            if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return '♋ Рак';
-            if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return '♌ Лев';
-            if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return '♍ Дева';
-            if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return '♎ Весы';
-            if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return '♏ Скорпион';
-            if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return '♐ Стрелец';
-            if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return '♑ Козерог';
-            if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return '♒ Водолей';
-            if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return '♓ Рыбы';
+            if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return 'Овен';
+            if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return 'Телец';
+            if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return 'Близнецы';
+            if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return 'Рак';
+            if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return 'Лев';
+            if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return 'Дева';
+            if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return 'Весы';
+            if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return 'Скорпион';
+            if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return 'Стрелец';
+            if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return 'Козерог';
+            if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return 'Водолей';
+            if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return 'Рыбы';
             return '';
         }
 
@@ -4268,23 +4272,34 @@
             const birthdayDisplay = c.birthday || 'Не указана';
 
             const infoItems = [
-                { label: 'Прозвища', val: c.nicknames || 'Не указаны', icon: 'fa-quote-left', wrap: true },
-                { label: 'Национальность', val: c.nationality || 'Не указана', icon: 'fa-flag' },
-                { label: 'Возраст', val: c.age || 'Не указан', icon: 'fa-hourglass-half' },
-                { label: 'Дата рождения', val: birthdayDisplay, icon: 'fa-cake-candles' },
-                { label: 'Знак зодиака', val: zodiac || 'Не определен', icon: 'fa-star-and-crescent' },
-                { label: 'Ориентация', val: c.orientation || 'Не указана', icon: 'fa-heart' },
-                { label: 'Вера / Убеждения', val: c.religion || 'Не указана', icon: 'fa-hands-praying' },
-                { label: 'Раса', val: c.species || 'Человек', icon: 'fa-dna' },
-                { label: 'Рост', val: c.height || 'Не указан', icon: 'fa-ruler-vertical' },
-                { label: 'Вселенная', val: c.world || 'Не указана', icon: 'fa-globe' }
+                { id: 'nicknames', label: 'Прозвища', val: c.nicknames || 'Не указаны', icon: 'fa-quote-left' },
+                { id: 'nationality', label: 'Национальность', val: c.nationality || 'Не указана', icon: 'fa-flag' },
+                { id: 'occupation', label: 'Род деятельности', val: c.occupation || 'Не указан', icon: 'fa-briefcase' },
+                { id: 'age', label: 'Возраст', val: c.age || 'Не указан', icon: 'fa-hourglass-half' },
+                { id: 'birthday', label: 'Дата рождения', val: birthdayDisplay, icon: 'fa-cake-candles' },
+                { id: 'zodiac', label: 'Знак зодиака', val: zodiac || 'Не определен', icon: 'fa-star-and-crescent' },
+                { id: 'orientation', label: 'Ориентация', val: c.orientation || 'Не указана', icon: 'fa-heart' },
+                { id: 'religion', label: 'Вера / Убеждения', val: c.religion || 'Не указана', icon: 'fa-hands-praying' },
+                { id: 'species', label: 'Раса', val: c.species || 'Человек', icon: 'fa-dna' },
+                { id: 'height', label: 'Рост', val: c.height || 'Не указан', icon: 'fa-ruler-vertical' },
+                { id: 'world', label: 'Вселенная', val: c.world || 'Не указана', icon: 'fa-globe' }
             ];
-            document.getElementById('detail-info-grid').innerHTML = infoItems.map(item => `
-                <div class="matte-inner p-3 rounded-xl border border-white/5">
-                    <span class="text-[10px] text-zinc-500 uppercase block mb-0.5"><i class="fa-solid ${item.icon} text-accent mr-1"></i> ${item.label}</span>
-                    <span class="text-zinc-200 font-medium ${item.wrap ? 'break-words' : 'truncate'} block" title="${escapeHtml(item.val)}">${escapeHtml(item.val)}</span>
+            const hiddenItems = c.hiddenDossier || [];
+            const shownItems = infoItems.filter(item => !isGuestPreview || !hiddenItems.includes(item.id));
+            // При нечётном числе плашек последняя занимает всю строку, чтобы в сетке не оставалось дыры
+            document.getElementById('detail-info-grid').innerHTML = shownItems.map((item, idx) => {
+                const isHidden = hiddenItems.includes(item.id);
+                const isLastOdd = idx === shownItems.length - 1 && shownItems.length % 2 === 1;
+                return `
+                <div class="matte-inner relative p-3 rounded-xl border border-white/5 ${isHidden ? 'opacity-50' : ''} ${isLastOdd ? 'col-span-2' : ''}">
+                    <button type="button" onclick="window.toggleDossierItem('${item.id}')" title="${isHidden ? 'Показать зрителям' : 'Скрыть от зрителей'}" class="author-only absolute top-2 right-2 text-zinc-500 hover-text-accent transition">
+                        <i class="fa-solid ${isHidden ? 'fa-eye-slash' : 'fa-eye'} text-[10px]"></i>
+                    </button>
+                    <span class="text-[10px] text-zinc-500 uppercase block mb-0.5 pr-4"><i class="fa-solid ${item.icon} text-accent mr-1"></i> ${item.label}</span>
+                    <span class="text-zinc-200 font-medium break-words block">${escapeHtml(item.val)}</span>
                 </div>
-            `).join('');
+            `;
+            }).join('');
 
             document.getElementById('detail-summary-text').textContent = c.summary || 'Описание не добавлено.';
 
@@ -4931,6 +4946,18 @@
                 c.insta.enabled ? 'Вкладка Instagram включена' : 'Вкладка Instagram скрыта для гостей',
                 c.insta.enabled ? 'fa-eye' : 'fa-eye-slash'
             );
+        };
+
+        window.toggleDossierItem = function(itemId) {
+            const c = appState.characters.find(item => item.id === currentCharId);
+            if (!c || isGuestPreview) return;
+            const hiddenItems = c.hiddenDossier || [];
+            const isHidden = hiddenItems.includes(itemId);
+            c.hiddenDossier = isHidden ? hiddenItems.filter(id => id !== itemId) : [...hiddenItems, itemId];
+            markCharacterUpdated(c, isHidden ? 'Показана плашка досье' : 'Скрыта плашка досье');
+            saveStateToCloud();
+            renderCharacterDetail();
+            window.showToast(isHidden ? 'Плашка показана зрителям' : 'Плашка скрыта от зрителей', isHidden ? 'fa-eye' : 'fa-eye-slash');
         };
 
         let mediaDragContext = null; // { scope: 'char' | 'pairing', ownerId: string, draggedId: string }
@@ -7143,6 +7170,7 @@
             document.getElementById('char-form-world').value = editChar ? (editChar.world || '') : '';
             document.getElementById('char-form-nicknames').value = editChar ? (editChar.nicknames || '') : '';
             document.getElementById('char-form-nationality').value = editChar ? (editChar.nationality || '') : '';
+            document.getElementById('char-form-occupation').value = editChar ? (editChar.occupation || '') : '';
             document.getElementById('char-form-age').value = editChar ? (editChar.age || '') : '';
             document.getElementById('char-form-species').value = editChar ? (editChar.species || '') : '';
             document.getElementById('char-form-height').value = editChar ? (editChar.height || '') : '';
@@ -7177,6 +7205,7 @@
                 world: document.getElementById('char-form-world').value.trim() || 'Архив',
                 nicknames: document.getElementById('char-form-nicknames').value.trim(),
                 nationality: document.getElementById('char-form-nationality').value.trim(),
+                occupation: document.getElementById('char-form-occupation').value.trim(),
                 age: document.getElementById('char-form-age').value.trim(),
                 species: document.getElementById('char-form-species').value.trim(),
                 height: document.getElementById('char-form-height').value.trim(),
