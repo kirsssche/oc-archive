@@ -6653,7 +6653,7 @@
 
                     <div>
                         <label class="block text-zinc-400 mb-1">Подпись на стрелке</label>
-                        <input type="text" value="${escapeHtml(edge.label || '')}" oninput="window.updateSelectedDiagramEdge('label', this.value)" class="w-full bg-black/60 border border-white/10 rounded-lg px-2.5 py-1.5 text-white focus:border-accent focus:outline-none">
+                        <input type="text" value="${escapeHtml(edge.label || '')}" oninput="window.updateSelectedDiagramEdge('label', this.value, true)" class="w-full bg-black/60 border border-white/10 rounded-lg px-2.5 py-1.5 text-white focus:border-accent focus:outline-none">
                         <div class="flex flex-wrap gap-1 mt-1.5">
                             ${quickLabels.map(lbl => `
                                 <button type="button" onclick="window.updateSelectedDiagramEdge('label', '${lbl}')" class="text-[10px] px-2 py-0.5 rounded-full bg-white/5 hover:bg-white/10 text-zinc-300">${lbl}</button>
@@ -6678,7 +6678,7 @@
                                         style="background-color: ${c}"
                                         class="w-6 h-6 rounded-full border-2 ${edge.color === c ? 'border-white scale-110' : 'border-transparent'} transition"></button>
                             `).join('')}
-                            <input type="color" value="${edge.color || '#ec6b86'}" oninput="window.updateSelectedDiagramEdge('color', this.value)" class="w-7 h-7 bg-transparent cursor-pointer rounded">
+                            <input type="color" value="${edge.color || '#ec6b86'}" oninput="window.updateSelectedDiagramEdge('color', this.value, true)" onchange="window.updateSelectedDiagramEdge('color', this.value)" class="w-7 h-7 bg-transparent cursor-pointer rounded">
                         </div>
                     </div>
 
@@ -6776,13 +6776,21 @@
             reader.readAsDataURL(file);
         };
 
-        window.updateSelectedDiagramEdge = function(field, value) {
+        let diagramSaveTimeout = null;
+
+        // keepInspector: пока идёт ввод или выбор цвета, панель не перестраиваем — иначе поле теряет фокус, а палитра закрывается
+        window.updateSelectedDiagramEdge = function(field, value, keepInspector) {
             const cur = getCurrentDiagram();
             if (!cur || !selectedDiagramItem || selectedDiagramItem.type !== 'edge') return;
             const edge = cur.edges.find(e => e.id === selectedDiagramItem.id);
             if (!edge) return;
             edge[field] = value;
             renderDiagramCanvas();
+            if (diagramSaveTimeout) clearTimeout(diagramSaveTimeout);
+            if (keepInspector) {
+                diagramSaveTimeout = setTimeout(() => saveStateLocally(appState), 600);
+                return;
+            }
             if (field === 'stamp' || field === 'color' || field === 'label') renderDiagramInspector();
             saveStateLocally(appState);
         };
